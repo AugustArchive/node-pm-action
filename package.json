@@ -10,7 +10,7 @@
   "bugs": "https://github.com/auguwu/node-pm-cache/issues",
   "packageManager": "yarn@3.2.2",
   "scripts": {
-    "build": "yarn lint && yarn fmt && rimraf dist && ncc build src/runner.ts -o dist -m -C --license LICENSE",
+    "build": "yarn lint && yarn fmt && rimraf dist && ncc build src/runner.ts -o dist -m -C --license LICENSE && ncc build src/post-setup.ts -o dist/post-setup -m -C --license LICENSE",
     "lint": "eslint src --ext .ts,.tsx --fix",
     "fmt": "prettier --config ./.prettierrc.json --write ."
   },

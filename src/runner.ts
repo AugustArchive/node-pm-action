@@ -54,7 +54,7 @@ const main = async () => {
   core.setOutput('pkg-manager', packageManager);
   core.setOutput('lockfile', lockfile);
 
-  const hash = await hashFiles(lockfile);
+  const hash = await hashFiles(`**/${lockfile}`);
   core.debug(`lockfile hash [${lockfile}] => ${hash}`);
 
   const primaryKey = `${packageManager}-${os[process.platform]}-${version.major}-${hash}`;
@@ -65,6 +65,7 @@ const main = async () => {
   ]);
 
   core.setOutput('cache-hit', Boolean(key));
+  core.saveState('nodepm:cachePrimaryKey', primaryKey);
 
   if (key !== undefined && key === primaryKey) {
     core.info(`Received cache hit with primary key ${primaryKey}`);
@@ -72,13 +73,15 @@ const main = async () => {
     core.warning(`Unable to hit cache with primary key [${primaryKey}]`);
   }
 
-  const nmHash = await hashFiles(nodeModulesDir);
+  const nmHash = await hashFiles(`**/${nodeModulesDir}`);
   const nmPrimaryKey = `${packageManager}-${os[process.platform]}-node_modules-${version.major}-${nmHash}`;
   const nodeModulesCache = await cache.restoreCache([nodeModulesDir], nmPrimaryKey, [
     `${packageManager}-${os[process.platform]}-node_modules-${version.major}-`
   ]);
 
   core.setOutput('node-modules-cache-hit', Boolean(nodeModulesCache));
+  core.saveState('nodepm:nmPrimaryKey', nmPrimaryKey);
+
   if (nodeModulesCache === nmPrimaryKey) {
     core.info(`Received node_modules cache hit with primary key ${nmPrimaryKey}`);
   } else {

@@ -28,6 +28,8 @@ branding:
 runs:
   using: node16
   main: ./dist/index.js
+  post: ./dist/post-setup/index.js
+  post-if: success()
 
 inputs:
   node-modules:
@@ -39,3 +41,16 @@ inputs:
     description: The package manager that the project is using.
     required: false
     default: 'detect'
+
+outputs:
+  cache-hit:
+    description: If the package manager cache was already cached and it was restored.
+
+  package-manager:
+    description: The package manager that was used.
+
+  lockfile:
+    description: The lockfile path that was used to hash the primary cache key.
+
+  node-modules-cache-hit:
+    description: If the node-modules directory was cached (and restored) or not.
