@@ -40,7 +40,7 @@ export const detectPackageManager = async (): Promise<PackageManager> => {
   // pnpm > yarn > npm
   try {
     const version = await getExecOutput('pnpm', ['--version']);
-    info(`Detected and using pnpm! (v${version.stdout})`);
+    info(`Detected and using pnpm! (v${version.stdout.trim()})`);
 
     return 'pnpm';
   } catch (e) {
@@ -49,7 +49,7 @@ export const detectPackageManager = async (): Promise<PackageManager> => {
 
   try {
     const version = await getExecOutput('yarn', ['--version']);
-    info(`Detected and using Yarn v${version.stdout}!`);
+    info(`Detected and using Yarn v${version.stdout.trim()}!`);
 
     return 'yarn';
   } catch (e) {
@@ -58,7 +58,7 @@ export const detectPackageManager = async (): Promise<PackageManager> => {
 
   try {
     const version = await getExecOutput('npm', ['--version']);
-    info(`Unable to locate Yarn or pnpm, defaulting to npm v${version.stdout}...`);
+    info(`Unable to locate Yarn or pnpm, defaulting to npm v${version.stdout.trim()}...`);
 
     return 'npm';
   } catch (e) {
@@ -77,7 +77,7 @@ export const getCacheDirCommand = async (packageManager: PackageManager): Promis
 
       // Yarn 2.x+ changed the cache dir command.
       if (satisfies(version.stdout, '>=2.x')) {
-        return ['yarn', 'config', 'get', 'cacheDir'];
+        return ['yarn', 'config', 'get', 'cacheFolder'];
       }
 
       return ['yarn', 'cache', 'dir'];
