@@ -27,7 +27,7 @@ branding:
 
 runs:
   using: node16
-  main: ./dist/runner.js
+  main: ./dist/index.js
 
 inputs:
   node-modules:
