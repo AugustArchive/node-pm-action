@@ -73,7 +73,7 @@ const main = async () => {
     core.warning(`Unable to hit cache with primary key [${primaryKey}]`);
   }
 
-  const nmHash = await hashFiles(`**/${nodeModulesDir}`);
+  const nmHash = await hashFiles(nodeModulesDir);
   const nmPrimaryKey = `${packageManager}-${os[process.platform]}-node_modules-${version.major}-${nmHash}`;
   const nodeModulesCache = await cache.restoreCache([nodeModulesDir], nmPrimaryKey, [
     `${packageManager}-${os[process.platform]}-node_modules-${version.major}-`
