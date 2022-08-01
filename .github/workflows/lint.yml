@@ -72,7 +72,7 @@ jobs:
 
       - name: Setup Yarn and node-modules
         id: yarn-cache
-        uses: ../..
+        uses: ./
 
       - name: Install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true' || steps.yarn-cache.outputs.node-modules-cache-hit != 'true'
