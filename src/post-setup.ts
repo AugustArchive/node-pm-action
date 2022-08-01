@@ -28,8 +28,6 @@ import { hashFiles } from '@actions/glob';
 import { saveCache } from '@actions/cache';
 import { SemVer } from 'semver';
 
-let a = 'owo';
-
 const os: Record<string, string> = {
   darwin: 'macos',
   linux: 'linux',

@@ -67,7 +67,7 @@ const main = async () => {
   core.setOutput('cache-hit', Boolean(key));
   core.saveState('nodepm:cachePrimaryKey', primaryKey);
 
-  if (key !== undefined && key === primaryKey) {
+  if (key) {
     core.info(`Received cache hit with primary key ${primaryKey}`);
   } else {
     core.warning(`Unable to hit cache with primary key [${primaryKey}]`);
@@ -82,7 +82,7 @@ const main = async () => {
   core.setOutput('node-modules-cache-hit', Boolean(nodeModulesCache));
   core.saveState('nodepm:nmPrimaryKey', nmPrimaryKey);
 
-  if (nodeModulesCache === nmPrimaryKey) {
+  if (nodeModulesCache) {
     core.info(`Received node_modules cache hit with primary key ${nmPrimaryKey}`);
   } else {
     core.warning(`Unable to hit cache with primary key [${nmPrimaryKey}]`);
