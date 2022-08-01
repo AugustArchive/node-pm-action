@@ -21,17 +21,52 @@
  * SOFTWARE.
  */
 
-import { getInput, getState, info, setFailed } from '@actions/core';
+import { type PackageManager, assertValidValue, detectPackageManager, getCacheDirCommand, getLockfile } from './detect';
+import { debug, getInput, info, setFailed, setOutput } from '@actions/core';
+import { getExecOutput } from '@actions/exec';
+import { hashFiles } from '@actions/glob';
+import { saveCache } from '@actions/cache';
+import { SemVer } from 'semver';
+
+const os: Record<string, string> = {
+  darwin: 'macos',
+  linux: 'linux',
+  win32: 'windows'
+};
 
 const main = async () => {
   info('Saving package manager and node-modules cache...');
 
-  const primaryKey = getState('nodepm:cachePrimaryKey');
-  const nmPrimaryKey = getState('nodepm:nmPrimaryKey');
+  const nodeModulesDir = getInput('node-modules', { trimWhitespace: true });
+  let packageManager = getInput('package-manager', { trimWhitespace: true }) as unknown as PackageManager;
 
-  info(primaryKey);
-  info(nmPrimaryKey);
-  info(getInput('package-manager'));
+  assertValidValue(packageManager);
+  if (packageManager === 'detect') {
+    packageManager = await detectPackageManager();
+  }
+
+  const [command, ...args] = await getCacheDirCommand(packageManager);
+  const lockfile = getLockfile(packageManager);
+  const result = await getExecOutput(command, args);
+  const version = await getExecOutput('node', ['--version']).then((result) => new SemVer(result.stdout));
+
+  info(`Resolved cache directory => ${result.stdout}`);
+  setOutput('pkg-manager', packageManager);
+  setOutput('lockfile', lockfile);
+
+  const hash = await hashFiles(`**/${lockfile}`);
+  debug(`lockfile hash [${lockfile}] => ${hash}`);
+
+  const primaryKey = `${packageManager}-${os[process.platform]}-${version.major}-${hash}`;
+  debug(`primary key => ${primaryKey}`);
+
+  const nmHash = await hashFiles(nodeModulesDir);
+  const nmPrimaryKey = `${packageManager}-${os[process.platform]}-node_modules-${version.major}-${nmHash}`;
+
+  await saveCache([result.stdout.trim()], primaryKey);
+  await saveCache([nodeModulesDir], nmPrimaryKey);
+
+  info('done!');
 };
 
 main().catch((ex) => setFailed(ex));

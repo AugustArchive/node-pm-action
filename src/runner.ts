@@ -60,7 +60,7 @@ const main = async () => {
   const primaryKey = `${packageManager}-${os[process.platform]}-${version.major}-${hash}`;
   core.debug(`primary key => ${primaryKey}`);
 
-  const key = await cache.restoreCache([result.stdout], primaryKey, [
+  const key = await cache.restoreCache([result.stdout.trim()], primaryKey, [
     `${packageManager}-${os[process.platform]}-${version.major}-`
   ]);
 
