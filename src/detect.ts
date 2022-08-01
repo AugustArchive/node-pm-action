@@ -23,17 +23,17 @@
 
 import { getExecOutput } from '@actions/exec';
 import { assertIsError } from '@noelware/utils';
-import { compare, satisfies } from 'semver';
+import { satisfies } from 'semver';
 import { info } from '@actions/core';
 
-const packageManagers: PackageManager[] = ['npm', 'pnpm', 'yarn'];
+const packageManagers: PackageManager[] = ['npm', 'pnpm', 'yarn', 'detect'];
 export type PackageManager = 'yarn' | 'pnpm' | 'npm' | 'detect';
 
 export const assertValidValue = (value: unknown) => {
   if (typeof value !== 'string') throw new TypeError(`Expected \`string\`, but received \`${value}\``);
 
-  const isValid = Object.keys(packageManagers).some((i) => value === i);
-  if (!isValid) throw new TypeError(`Expected ${Object.keys(packageManagers).join(', ')}, but received \`${value}\`.`);
+  const isValid = packageManagers.some((i) => value === i);
+  if (!isValid) throw new TypeError(`Expected ${packageManagers.join(', ')}, but received \`${value}\`.`);
 };
 
 export const detectPackageManager = async (): Promise<PackageManager> => {
