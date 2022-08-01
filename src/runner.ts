@@ -51,6 +51,8 @@ const main = async () => {
   const version = await getExecOutput('node', ['--version']).then((result) => new SemVer(result.stdout));
 
   core.info(`Resolved cache directory => ${result.stdout}`);
+  core.setOutput('pkg-manager', packageManager);
+  core.setOutput('lockfile', lockfile);
 
   const hash = await hashFiles(lockfile);
   core.debug(`lockfile hash [${lockfile}] => ${hash}`);
@@ -62,11 +64,12 @@ const main = async () => {
     `${packageManager}-${os[process.platform]}-${version.major}-`
   ]);
 
+  core.setOutput('cache-hit', Boolean(key));
+
   if (key !== undefined && key === primaryKey) {
     core.info(`Received cache hit with primary key ${primaryKey}`);
-    core.setOutput('cache-hit', 'true');
-    core.setOutput('pkg-manager', packageManager);
-    core.setOutput('lockfile', lockfile);
+  } else {
+    core.warning(`Unable to hit cache with primary key [${primaryKey}]`);
   }
 
   const nmHash = await hashFiles(nodeModulesDir);
@@ -75,9 +78,11 @@ const main = async () => {
     `${packageManager}-${os[process.platform]}-node_modules-${version.major}-`
   ]);
 
+  core.setOutput('node-modules-cache-hit', Boolean(nodeModulesCache));
   if (nodeModulesCache === nmPrimaryKey) {
-    core.info(`Received node_modules cache hit with primary key ${primaryKey}`);
-    core.setOutput('node-modules-cache-hit', 'true');
+    core.info(`Received node_modules cache hit with primary key ${nmPrimaryKey}`);
+  } else {
+    core.warning(`Unable to hit cache with primary key [${nmPrimaryKey}]`);
   }
 };
 
