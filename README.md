@@ -31,7 +31,23 @@ jobs:
 
 This will produce a cache bundle with the following keys:
 
-- `<pm>-<os>-<node-version>-<hashed yarn.lock/package-lock.json>`
+- `<pm>-<os>-<node-version>-<hashed yarn.lock/package-lock.json/pnpm-lockfile.yaml>`
+
+## Inputs
+
+| Name              | Type                                 | Description                            | Required? | Default Value    |
+| :---------------- | :----------------------------------- | :------------------------------------- | :-------- | :--------------- |
+| `node-modules`    | **Path** (relative or absolute)      | The `node-modules` directory to cache. | false     | `./node_modules` |
+| `package-manager` | **pnpm**/**yarn**/**npm**/**detect** | The package manager to cache objects.  | false     | `"detect"`       |
+
+## Outputs
+
+| Name                     | Type                      | Description                                                          |
+| :----------------------- | :------------------------ | :------------------------------------------------------------------- |
+| `cache-hit`              | Boolean                   | If the package manager cache was already cached and it was restored. |
+| `package-manager`        | **pnpm**/**yarn**/**npm** | The package manager that was used.                                   |
+| `lockfile`               | Path (absolute)           | The lockfile path that was used to hash the primary cache key.       |
+| `node-modules-cache-hit` | Boolean                   | If the **node-modules** directory was cached (and restored) or not.  |
 
 ## License
 
