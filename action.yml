@@ -38,4 +38,4 @@ inputs:
   package-manager:
     description: The package manager that the project is using.
     required: false
-    default: detect
+    default: 'detect'
