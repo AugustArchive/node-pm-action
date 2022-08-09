@@ -5,9 +5,9 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@actions/cache@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@actions/cache@npm:3.0.1"
+"@actions/cache@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@actions/cache@npm:3.0.2"
   dependencies:
     "@actions/core": ^1.2.6
     "@actions/exec": ^1.0.1
@@ -18,7 +18,7 @@ __metadata:
     "@azure/storage-blob": ^12.8.0
     semver: ^6.1.0
     uuid: ^3.3.3
-  checksum: 4b48e71c0edcfd2a27d235405ccb0c4574cf23a962001400b5025065f0adabceff74a506ccabf4d5fc7e2d36dbc13adf3440c3d1b2596846dd3491303a3f11a6
+  checksum: f80f3bfd9de727f39f9df2bbe6370e0bd95e4fb3225d2b785edacbee7a6044f7be286d0ef6910fcb705a6d8c64aef81f69b719b3bdaf73716472f75ff2abf299
   languageName: node
   linkType: hard
 
@@ -295,7 +295,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@noel/node-pm-cache@workspace:."
   dependencies:
-    "@actions/cache": 3.0.1
+    "@actions/cache": 3.0.2
     "@actions/core": 1.9.1
     "@actions/exec": 1.1.1
     "@actions/glob": 0.3.0
