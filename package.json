@@ -20,7 +20,7 @@
     "@actions/exec": "1.1.1",
     "@actions/glob": "0.3.0",
     "@noelware/utils": "2.2.1",
-    "semver": "7.3.7"
+    "semver": "7.3.8"
   },
   "devDependencies": {
     "@augu/eslint-config": "3.0.0",
