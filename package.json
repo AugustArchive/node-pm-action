@@ -8,7 +8,7 @@
   "homepage": "https://docs.floofy.dev/actions/node-pm-cache",
   "repository": "https://github.com/auguwu/node-pm-cache",
   "bugs": "https://github.com/auguwu/node-pm-cache/issues",
-  "packageManager": "yarn@3.4.1",
+  "packageManager": "yarn@3.8.3",
   "scripts": {
     "build": "yarn lint && yarn fmt && rimraf dist && ncc build src/runner.ts -o dist -m -C --license LICENSE && ncc build src/post-setup.ts -o dist/post-setup -m -C --license LICENSE",
     "lint": "eslint src --ext .ts,.tsx --fix",
